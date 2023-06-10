@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;900&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth !important;
+        }
+        body {
+            overflow-x: hidden !important;
+            margin-left: 150px !important;
+        }
+        .container {
+            width: 100vw;
+            overflow-y: hidden;
+        }
+        .navbar {
+            z-index: 10000; 
+            margin-top: -10px; 
+            padding: 0px; 
+            height: 17vh; 
+            background-color: rgb(255, 255, 255); 
+            width: 100vw; 
+            position: fixed;
+            top:0px;
+            left: 0px;
+            box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.201);
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 100px;
+            font-weight: 900;
+            align-items: center;
+            transition: all 600ms;
+        }
+        .navbar.scrolled {
+            height: 10vh !important; 
+            background-color: rgb(255, 252, 247) !important;
+            background-image: none;
+            color: rgb(0, 130, 130);
+            background-clip: initial;
+            -webkit-background-clip: initial;
+            font-size: 50px !important;
+            font-weight: 100 !important;
+            align-items: center;
+            box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.105);
+        }
+        .our-team{
+            margin-bottom:10rem;
+            width: 300px;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+        }
+        .our-team img{
+            width: 60%;
+            height: auto;
+            transition: all 0.55s ease 0s;
+            border-radius: 50%;
+        }
+        .our-team:hover img{ width:70%; }
+        .our-team .team-content{
+            padding: 5px 10px 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            transform-origin: 0 0;
+            transition: all 0.55s ease 0s;
+        }
+        .our-team:hover .team-content{ opacity: 1; }
+        .our-team .team-content:before,
+        .our-team .team-content:after{
+            content: "";
+            width: 400px;
+            height: 2px;
+            background: #95ccea;
+            position: absolute;
+            top: 0;
+            left: 10px;
+            transform: translateX(100%);
+            transition: all 0.55s ease 0s;
+        }
+        .our-team .team-content:after{
+            top: auto;
+            left: auto;
+            bottom: 0;
+            right: 10px;
+            transform: translateX(-100%);
+        }
+        .our-team:hover .team-content:before,
+        .our-team:hover .team-content:after{
+            transform: translate(0, 0);
+            transition-delay: 0.15s;
+        }
+        .our-team .title{
+            font-size: 20px;
+            font-weight: 400;
+            color: #fff;
+            text-transform: uppercase;
+            margin: 0;
+        }
+        .our-team .title:before,
+        .our-team .title:after{
+            content: "";
+            width: 2px;
+            height: 300px;
+            background: #95ccea;
+            position: absolute;
+            top: 10px;
+            right: 0;
+            transform: translateY(100%);
+            transition: all 0.55s ease 0s;
+        }
+        .our-team .title:after{
+            top: auto;
+            right: auto;
+            bottom: 10px;
+            left: 0;
+            transform: translateY(-100%);
+        }
+        .our-team:hover .title:before,
+        .our-team:hover .title:after{
+            transform: translate(0, 0);
+        }
+        .our-team .post{
+            display: block;
+            padding: 5px 10px;
+            font-size: 17px;
+            font-weight: 700;
+            color: #000;
+            text-transform: capitalize;
+        }
+        @media only screen and (max-width: 990px){
+            .our-team{ margin-bottom: 30px; }
+        }
+        .swarm {
+            -webkit-tap-highlight-color: transparent;
+            tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
+            position: absolute;
+            top:0vh;
+            left:0vw;
+        }
+        
+        .boid {
+            z-index: 10;
+            position: absolute;
+            will-change: transform;
+            -webkit-transform: translate3d(0, 0, 0);
+            -moz-transform: translate3d(0, 0, 0);
+            -ms-transform: translate3d(0, 0, 0);
+            -o-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            -webkit-border-radius: 50% 50% 50% 50% / 90% 90% 10% 10%;
+            border-radius: 50% 50% 50% 50% / 90% 90% 10% 10%;
+            -webkit-user-select: none;
+            user-select: none;
+            background-size: 20px 20px;
+        }
+        .hexagon-list {
+            margin-bottom: 35px;
+        }
+        .hexagon-list:nth-child(even) {
+            padding-left: 55px;
+        }
+        .hexagon {
+            z-index: 1000000;
+            transition: background-color 0.5s ease;
+            width: 100px;
+            height: 50px;
+            background-color: #17b49f;
+            position: relative;
+            float: left;
+            margin-right: 10px;
+            line-height: 50px;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+        }
+        .hexagon:hover {
+            background-color: #0f7b6d;
+        }
+        .hexagon:hover:before {
+            border-bottom-color: #107567;
+        }
+        .hexagon:hover:after {
+            border-top-color: #0e7265;
+        }
+        .hexagon:before,
+        .hexagon:after {
+            position: absolute;
+            content: "";
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            left: 0;
+            right: 0;
+        }
+        .hexagon:before {
+            margin-bottom: -1px;
+            transition: border-bottom-color 0.5s ease;
+            bottom: 100%;
+            border-bottom: 25px solid #17b49f;
+        }
+        .hexagon:after {
+            margin-top: -1px;
+            transition: border-top-color 0.5s ease;
+            top: 100%;
+            border-top: 25px solid #17b49f;
+        }
+        .hexagon-inner {
+            transition: background-color 0.5s ease;
+            width: 100px;
+            height: 50px;
+            background-color: white;
+            position: relative;
+            float: left;
+            margin-right: 10px;
+            line-height: 50px;
+            color: #17b49f;
+            text-align: center;
+            cursor: pointer;
+            transform: scale(0.95);
+            z-index: 100;
+        }
+        .hexagon-inner:before,
+        .hexagon-inner:after {
+            position: absolute;
+            content: "";
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            left: 0;
+            right: 0;
+        }
+        .hexagon-inner:before {
+            margin-bottom: -1px;
+            transition: border-bottom-color 0.5s ease;
+            bottom: 100%;
+            border-bottom: 25px solid white;
+        }
+        .hexagon-inner:after {
+            margin-top: -1px;
+            transition: border-top-color 0.5s ease;
+            top: 100%;
+            border-top: 25px solid white;
+        }
+
+
+
+
+
+        .navbar-nav li a {
+                      color:white;
+                      
+                  }
+      
+                   .navbar-nav li a:hover {
+                        background-color: #3883bd;
+                        color: white;
+                        font-size:1.3rem;
+                       }
+ 
+                       .navbar-brand {
+        padding: 0;
+        display: table-cell;
+        vertical-align: middle;
+        line-height: 90px;
+      }
+      
+      .navbar-brand img {
+        vertical-align: middle;
+      }
+      
+      .navbar-toggle {
+        padding: 0;
+        margin: 0;
+        width: 80px;
+      }
+      
+      .navbar-collapse.in {
+        margin-top: -5px !important;
+      }
+      .nbar {
+        height: 10vh;
+        padding-top: 0.5vh;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.612);
+        position: fixed;
+        transition: all 600ms;
+        z-index: 100000;
+      }
+      .nbar.scred {
+        height: 54px !important;
+        padding-top: 0px !important;
+        padding-bottom: 0.5%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.919);
+        position: fixed;
+      }
+      .nlinks {
+        margin-top: -30px;
+        display: inline-block;
+        width: 11%;
+        text-align: center;
+        color: white !important;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 100;
+        transition: 0.2s;
+      }
+      .nlinks:hover {
+        font-weight: 900;
+        cursor: pointer;
+      }
+      .nlogo {
+        background-color: rgb(19, 96, 97);
+        height: 160%; 
+        position: absolute;
+        z-index: -1;
+        top: 0px;
+        left: 5.9%;
+        transition: all 600ms;
+      }
+      .nlogo.scred2 {
+        background-color: rgba(0, 0, 0, 1);
+        height: 65.6px !important;
+        transition: all 600ms ease-in-out;
+      }
+      .nlogop {
+        width: 100%; text-align:center; 
+        padding-top: 90%; 
+        background-color: rgb(19, 96, 97); 
+        color: white; 
+        font-family: 'Montserrat', sans-serif; 
+        font-weight: 100;
+        font-size: 10px;
+        letter-spacing: 3px;
+        transition: all 2000ms ease-in-out;
+      }
+      .nlogop.scred3 {
+        display:none !important;
+        transition: all 2000ms ease-in-out;
+      }
+
+  
+      .toggle_bar{
+        margin-bottom:4rem;
+        
+      }
+   
+      .toggle_bar li{
+        background-color: #EEE !important;
+        color:#555 !important;
+        margin-left: 3rem !important;
+        z-index:10;
+
+      }
+
+
+      .toggle_bar li a{
+        display:inline-block;
+        width:100%;
+        height:100%;
+      }
+
+    ul.toggle_bar{
+        width:40% !important;
+        margin-left:auto;
+        margin-right: auto;
+    }
+
+
+
+    @media screen and (max-width: 500px) {
+   
+   .navbar {
+    height: 10vh !important;
+    background-color: rgb(255, 252, 247) !important;
+    background-image: none;
+    color: rgb(0, 130, 130);
+    background-clip: initial;
+    -webkit-background-clip: initial;
+    font-size: 50px !important;
+    font-weight: 100 !important;
+    align-items: center;
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.105);
+
+  }
+
+
+  ul.toggle_bar {
+    width:100% !important; 
+  }
+
+  ul.toggle_bar li {
+    margin-bottom:1rem;
+  }
+
+}
+
+    </style>
+    <script>
+        $(function () {
+            $(document).scroll(function () {
+                var $nav = $(".navbar");
+                $nav.toggleClass('scrolled', $(this).scrollTop() > $nav.height());
+            });
+        });
+    </script>
+    <script> window.console = window.console || function(t) {}; </script>
+</head>
+<body>
+   
+
+
+    <header class="navbar" style="margin-top:0rem;">
+        
+        <a style="display:block ; width: 100vw; text-align: center; background-color:#42abca; color: transparent; background-clip: text; -webkit-background-clip: text; background-position: 20vh 30vw;">Swarm Team  <button type="button" class="btn btn-warning" style="margin-left:4rem;" onclick="window.location.href='./index.html';">Go to home &#8624;</button></a>
+    </header>
+
+
+    <div class="container" style="overflow-x: hidden; width: 1580px; margin-left: -150px">
+       
+
+        <div class="swarm"></div>
+        <div style="height: 25vh;" id="founders"></div>
+        <div style="width:max-content;margin-top:5rem;">
+            
+            
+            
+            <div class="container" style="margin-top:0rem;">
+                <ul class="nav nav-pills toggle_bar">
+                  <li class="active first"><a data-toggle="pill" href="#home">Software</a></li>
+                  <li><a data-toggle="pill" href="#menu1">Mechanical</a></li>
+                  <li><a data-toggle="pill" href="#menu2">Embedded</a></li>
+                  <li><a data-toggle="pill" href="#menu3">Alumnus</a></li>
+                </ul>
+                
+                <div class="tab-content">
+    
+                
+                        <div id="home" class="tab-pane fade in active">
+                            <div class="row" style="width: 1200px;">
+                                <div class="col-lg-3 col-sm-6 col-xs-12">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <div class="our-team">
+                                        <img src="./img/software_team/srijanak_de.png">
+                                        <h4><b>Srijanak De</b></h3>
+                                        <span >Member, Software Team</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-xs-12">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <div class="our-team">
+                                        <img src="./img/software_team/ayan_satpathy.png">
+                                        <h4><b>Aryan Satpathy</b></h3>
+                                            <span >Member, Software Team</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-xs-12">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <div class="our-team">
+                                        <img src="./img/software_team/harshit_choudhary.png">
+                                        <h4><b>Harshith Choudhary</b></h3>
+                                            <span >Member, Software Team</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-xs-12">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <div class="our-team">
+                                        <img src="./img/software_team/likith_reddy_moredigan.png">
+                                        <h4><b>Likith Reddy Morgan</b></h3>
+                                            <span >Member, Software Team</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="width: 1200px;">
+                                <div class="col-lg-3 col-sm-6 col-xs-12">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <div class="our-team">
+                                        <img src="./img/software_team/meghna_nallamili.png">
+                                        <h4><b>Meghna nallamili</b></h3>
+                                            <span >Member, Software Team</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-xs-12">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <div class="our-team">
+                                        <img src="./img/software_team/millon_madhur_das.png">
+                                        <h4><b>Millon Madhur Das</b></h3>
+                                            <span >Member, Software Team</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-xs-12">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <div class="our-team">
+                                        <img src="./img/software_team/mitadru_datta.png">
+                                        <h4><b>Mitadru Datta</b></h3>
+                                            <span >Member, Software Team</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-xs-12">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <div class="our-team">
+                                        <img src="./img/software_team/navneeth_shaji.png">
+                                        <h4><b>Navneeth Shaji</b></h3>
+                                            <span >Member, Software Team</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="width: 1200px;">
+                                <div class="col-lg-3 col-sm-6 col-xs-12">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <div class="our-team">
+                                        <img src="./img/software_team/Nilaksh_delhi.png">
+                                        <h4><b>Nilaksh</b></h3>
+                                            <span >Member, Software Team</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3  col-sm-6 col-xs-12">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <div class="our-team">
+                                        <img src="./img/software_team/ojas_deshmukh.png">
+                                        <h4><b>Ojas Deshmukh</b></h3>
+                                            <span >Member, Software Team</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3  col-sm-6 col-xs-12">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <div class="our-team">
+                                        <img src="./img/software_team/vansh_agarwal.png">
+                                        <h4><b>Vansh Agarwal</b></h3>
+                                            <span >Member, Software Team</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3  col-sm-6 col-xs-12">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <div class="our-team">
+                                        <img src="./img/software_team/rishan.png">
+                                        <h4><b>Rishan Dsilva</b></h3>
+                                            <span >Member, Software Team</span>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            
+                            <div class="row" style="width: 1200px;">
+                                <div class="col-lg-3  col-sm-6 col-xs-12">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <div class="our-team">
+                                        <img src="./img/software_team/sidhartha_vishwakarma.png">
+                                        <h4><b>Sidhartha Vishwakarma</b></h3>
+                                            <span >Member, Software Team</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3  col-sm-6 col-xs-12">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <div class="our-team">
+                                        <img src="./img/software_team/Spandan.jpg">
+                                        <h4><b>Spandan Kumar Sahu</b></h3>
+                                            <span >Member, Software Team</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3  col-sm-6 col-xs-12">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                                    <div class="our-team">
+                                        <img src="./img/software_team/ashwin_prasanth.png">
+                                        <h4><b>Ashwin Prasanth</b></h3>
+                                            <span >Member, Software Team</span>
+                                    </div>
+                                </div>           
+                            </div>
+                    
+                        </div>
+        
+        
+                  <div id="menu1" class="tab-pane fade"> 
+                    <div class="row" style="width: 1200px;">
+                        <div class="col-lg-3  col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/mechanical_team/shaswata_banik.png">
+                                <h4><b>Shaswata Banik</b></h3>
+                                    <span >Member, Mechanical Team</span>
+                            </div>
+                        </div>    
+                    </div>
+                  </div>
+
+
+
+                  <div id="menu2" class="tab-pane fade">
+                    <div class="row" style="width: 1200px;">
+                        <div class="col-lg-3  col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/embedded_team/abhinav_kandregula.png">
+                                <h4><b>Abhinav Kandregula</b></h3>
+                               <span >Member, Embedded Team</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3  col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/embedded_team/aditya_choudhary.png">
+                                <h4><b>Aditya Choudhary</b></h3>
+                                    <span >Member, Embedded Team</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3  col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/embedded_team/aman_kumar_singh.png">
+                                <h4><b>Aman Kumar Singh</b></h3>
+                                    <span >Member, Embedded Team</span>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+
+
+
+                  <div id="menu3" class="tab-pane fade">
+                    <div class="row" style="width: 1200px;">
+                        <div class="col-lg-3  col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/software_team/alumnus/Anushka_singh.png">
+                                <h4><b>Anushka Singh</b></h3>
+                                <span >Software Team (Alumnus)</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3  col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/software_team/alumnus/KK.jpg">
+                                <h4><b>Kumar Krishna Agarwal</b></h3>
+                                    <span >Software Team (Alumnus)</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3  col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/software_team/alumnus/koushik.jpg">
+                                <h4><b>Koushik</b></h3>
+                                    <span >Software Team (Alumnus)</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/software_team/alumnus/moin.jpg">
+                                <h4><b>Mouin Sheikh</b></h3>
+                                    <span >Software Team (Alumnus)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="width: 1200px;">
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/software_team/alumnus/Muskaan.jpg">
+                                <h4><b>Muskaan</b></h3>
+                                    <span >Software Team (Alumnus)</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/software_team/alumnus/NilayPochhi.jpg">
+                                <h4><b>Nilay Pochhi</b></h3>
+                                    <span >Software Team (Alumnus)</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/software_team/alumnus/nitish_kumar.png">
+                                <h4><b>Nitish Kumar</b></h3>
+                                    <span >Software Team (Alumnus)</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/software_team/alumnus/pranav_shukla.png">
+                                <h4><b>Pranav Shukla</b></h3>
+                                    <span >Software Team (Alumnus)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="width: 1200px;">
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/software_team/alumnus/Rajdeep.jpg">
+                                <h4><b>Rajdeep</b></h3>
+                                    <span >Software Team (Alumnus)</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/software_team/alumnus/Roy.jpg">
+                                <h4><b>Mayank Roy</b></h3>
+                                    <span >Software Team (Alumnus)</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/software_team/alumnus/sara_jain.png">
+                                <h4><b>Sara Jain</b></h3>
+                                    <span >Software Team (Alumnus)</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/software_team/alumnus/saransh_patel.png">
+                                <h4><b>Saransh Patel</b></h3>
+                                    <span >Software Team (Alumnus)</span>
+                            </div>
+                        </div>
+                    </div>
+            
+                    
+                    <div class="row" style="width: 1200px;">
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/software_team/alumnus/Amegh.jpg">
+                                <h4><b>Amegh</b></h3>
+                                    <span >Software Team (Alumnus)</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/mechanical_team/Alumni/Amandeep.png">
+                                <h4><b>Amandeep</b></h3>
+                                    <span >Software Team (Alumnus)</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/software_team/alumnus/Shushman.jpg">
+                                <h4><b>Shushman</b></h3>
+                                    <span >Software Team (Alumnus)</span>
+                            </div>
+                        </div>    
+                        
+                        
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                            <div class="our-team">
+                                <img src="./img/embedded_team/alumnus/Aman.jpg">
+                                <h4><b>Aman</b></h3>
+                                    <span >Embedded Team (Alumnus)</span>
+                            </div> 
+                    </div>
+                </div>
+                
+            
+                <div class="row" style="width: 1200px;">
+                    <div class="col-lg-3 col-sm-6 col-xs-12">
+                        <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                        <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                        <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                        <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                        <div class="our-team">
+                            <img src="./img/embedded_team/alumnus/aman_chandra.png">
+                            <h4><b>Aman Chandra</b></h3>
+                                <span >Embedded Team (Alumnus)</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-xs-12">
+                        <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                        <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                        <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                        <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                        <div class="our-team">
+                            <img src="./img/embedded_team/alumnus/Ankit.jpg">
+                            <h4><b>Ankit</b></h3>
+                                <span >Embedded Team (Alumnus)</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-xs-12">
+                        <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                        <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                        <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                        <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                        <div class="our-team">
+                            <img src="./img/embedded_team/alumnus/haque.jpg">
+                            <h4><b>Haque</b></h3>
+                                <span >Embedded Team (Alumnus)</span>
+                        </div>
+                    </div>    
+                    
+                    
+                    <div class="col-lg-3 col-sm-6 col-xs-12">
+                        <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                        <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                        <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                        <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                        <div class="our-team">
+                            <img src="./img/embedded_team/alumnus/jayesh_sharma.png">
+                            <h4><b>Jayesh Sharma</b></h3>
+                                <span >Embedded Team (Alumnus)</span>
+                        </div> 
+                </div>
+            </div> 
+            
+            
+            
+            <div class="row" style="width: 1200px;">
+                <div class="col-lg-3 col-sm-6 col-xs-12">
+                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <div class="our-team">
+                        <img src="./img/embedded_team/alumnus/Pathak.jpg">
+                        <h4><b>Pathak</b></h3>
+                            <span >Embedded Team (Alumnus)</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-xs-12">
+                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <div class="our-team">
+                        <img src="./img/embedded_team/alumnus/prerit_jain.png">
+                        <h4><b>Prerit Jain</b></h3>
+                            <span >Embedded Team (Alumnus)</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-xs-12">
+                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <div class="our-team">
+                        <img src="./img/embedded_team/alumnus/Rishal.jpg">
+                        <h4><b>Rishal</b></h3>
+                            <span >Embedded Team (Alumnus)</span>
+                    </div>
+                </div>    
+                
+                
+                <div class="col-lg-3 col-sm-6 col-xs-12">
+                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <div class="our-team">
+                        <img src="./img/embedded_team/alumnus/rudrajyoti_roy.png">
+                        <h4><b>RudraJyoti Roy</b></h3>
+                            <span >Embedded Team (Alumnus)</span>
+                    </div> 
+            </div>
+            </div> 
+            
+            
+            
+            <div class="row" style="width: 1200px;">
+                <div class="col-lg-3 col-sm-6 col-xs-12">
+                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <div class="our-team">
+                        <img src="./img/embedded_team/alumnus/umang.jpg">
+                        <h4><b>Umang</b></h3>
+                            <span >Embedded Team (Alumnus)</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-xs-12">
+                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: -285px; left: -1066px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: -364px; left: -195px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(-45deg); color: #95ccea; position: absolute; top: 684px; left: -1034px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <hr style="transform: rotate(45deg); color: #95ccea; position: absolute; top: 684px; left: 35px; width: 1500px; border-width: 2px; border-color: #95ccea;">
+                    <div class="our-team">
+                        <img src="./img/embedded_team/alumnus/yuvraj_kumar.png">
+                        <h4><b>Yuvraj Singh</b></h3>
+                            <span >Embedded Team (Alumnus)</span>
+                    </div>
+                </div>
+                </div>    
+                  </div>
+                </div>
+              </div>
+        
+            
+
+    
+
+    <script>
+        // Swarm by @neave
+        window.requestAnimationFrame =
+        window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback) {
+            setTimeout(callback, 1000 / 60);
+        };
+
+        Math.clamp = function(n, min, max) {
+        return Math.max(min, Math.min(n, max));
+        };
+
+        var boids = [],
+        boidsDiv,
+        TURN_SPEED = 0.03,
+        MIN_DIST = 6,
+        MAX_DIST = 30,
+        MOUSE_DIST = 400,
+        targetX,
+        targetY;
+
+        function Boid(width, height, speed) {
+        this.x = 0;
+        this.y = 0;
+        this.vx = 0;
+        this.vy = 0;
+        this.angle = 0;
+        this.size = 8;
+        this.speed = speed;
+        this.closestBoid = null;
+
+        this.div = document.createElement('div');
+        this.div.style.width = width + 'px';
+        this.div.style.height = height + 'px';
+        this.div.classList.add('boid');
+        }
+
+        Boid.prototype.update = function() {
+        this.closestBoid = this.getClosest();
+        if (!this.closestBoid) {
+            return;
+        }
+
+        var hx,
+            hy;
+
+        if (targetX && targetY) {
+            hx = targetX - this.x;
+            hy = targetY - this.y;
+        } else {
+            hx = this.closestBoid.x - this.x;
+            hy = this.closestBoid.y - this.y;
+        }
+
+        var distHeading = Math.sqrt(hx * hx + hy * hy),
+            vxHeading,
+            vyHeading;
+
+        if (distHeading > MOUSE_DIST) {
+            vxHeading = Math.random() - 0.5;
+            vyHeading = Math.random() - 0.5;
+        } else {
+            vxHeading = hx / distHeading;
+            vyHeading = hy / distHeading;
+        }
+
+        var dxClosest = this.closestBoid.x - this.x,
+            dyClosest = this.closestBoid.y - this.y,
+            normClosest = Math.sqrt(dxClosest * dxClosest + dyClosest * dyClosest),
+            distClosest = Math.sqrt(dxClosest * dxClosest + dyClosest * dyClosest) - this.closestBoid.size,
+            vxClosest = dxClosest / normClosest,
+            vyClosest = dyClosest / normClosest,
+            vxAverage,
+            vyAverage;
+
+        if (distClosest > MAX_DIST) {
+            vxAverage = vxHeading + vxClosest;
+            vyAverage = vyHeading + vyClosest;
+        } else if (distClosest < MIN_DIST) {
+            vxAverage = -vxClosest;
+            vyAverage = -vyClosest;
+        } else {
+            vxAverage = vxHeading;
+            vyAverage = vyHeading;
+        }
+
+        var normAverage = Math.sqrt(vxAverage * vxAverage + vyAverage * vyAverage);
+
+        vxAverage = vxAverage / normAverage;
+        vyAverage = vyAverage / normAverage;
+
+        var crossProduct = this.vx * vyAverage - this.vy * vxAverage,
+            angleDifference = Math.abs((this.vx * vxAverage + this.vy * vyAverage > 0) ? Math.asin(crossProduct) : Math.PI - Math.asin(crossProduct));
+
+        if (crossProduct > 0) {
+            this.angle += angleDifference * TURN_SPEED; // Turn right
+        } else {
+            this.angle -= angleDifference * TURN_SPEED; // Turn left
+        }
+
+        this.vx = Math.cos(this.angle);
+        this.vy = Math.sin(this.angle);
+
+        this.move();
+        };
+
+        Boid.prototype.move = function() {
+        this.x += this.vx * this.speed;
+        this.y += this.vy * this.speed;
+
+        if (this.x < -this.size * 2) {
+            this.x = window.innerWidth;
+        } else if (this.x > 1580 + this.size) {
+            this.x = -this.size;
+        }
+        if (this.y < -this.size * 3) {
+            this.y = window.innerHeight;
+        } else if (this.y > 1580 + this.size) {
+            this.y = -this.size;
+        }
+
+        this.div.style.transform = this.div.style.webkitTransform = this.getTransform();
+        };
+
+        Boid.prototype.getTransform = function() {
+        return 'translate3d(' + this.x + 'px' + ',' + this.y + 'px,0) rotateZ(' + (this.angle * 180 / Math.PI - 90) + 'deg)';
+        };
+
+        Boid.prototype.getClosest = function() {
+        var dist = Infinity,
+            closest = null;
+
+        for (var i = boids.length; i--; ) {
+            var b = boids[i];
+            if (this !== b) {
+                var dx = b.x - this.x;
+                var dy = b.y - this.y;
+                var d = dx * dx + dy * dy - b.size * b.size;
+                if (d < dist) {
+                    dist = d;
+                    closest = b;
+                }
+            }
+        }
+
+        return closest;
+        };
+
+        function addBoid(b) {
+        boidsDiv.appendChild(b.div);
+        boids.push(b);
+        }
+
+        function createBoids(total, width, height, speed) {
+        for (var i = total; i--; ) {
+            var b = new Boid(width, height, speed);
+            b.x = Math.random() * 1580;
+            b.y = Math.random() * 1540;
+            b.angle = Math.random() * 360;
+            addBoid(b);
+        }
+        }
+
+        function update() {
+        updateID = requestAnimationFrame(update);
+
+        for (var i = boids.length; i--; ) {
+            var b = boids[i];
+            b.update();
+        }
+        }
+
+        function init() {
+        boidsDiv = document.querySelector('.swarm');
+
+        var size = Math.sqrt(window.innerWidth * window.innerHeight);
+        if (size < 600) {
+            createBoids(100, 20, 20, 2);
+        } else {
+            createBoids(Math.floor(Math.clamp(size / 5, 100, 250)), 20, 20, 2);
+        }
+
+        window.onmousemove = function(event) {
+            targetX = event.pageX;
+            targetY = event.pageY;
+        };
+
+        document.onmouseout = function(event) {
+            targetX = targetY = 0;
+        };
+
+        document.ontouchstart = function(event) {
+            targetX = event.targetTouches[0].pageX;
+            targetY = event.targetTouches[0].pageY;
+            if (!event.target.href) {
+                event.preventDefault();
+            }
+        };
+
+        document.ontouchmove = function(event) {
+            targetX = event.targetTouches[0].pageX;
+            targetY = event.targetTouches[0].pageY;
+        };
+
+        document.ontouchend = function(event) {
+            targetX = targetY = 0;
+        };
+
+        update();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>

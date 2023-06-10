@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9">
+<![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+  <!--<![endif]-->
+  <head>
+    <!-- BASICS -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" type="image/png" href="http://swarm-iitkgp.github.io/favicon.ico">
+    <title>Swarm IIT Kharagpur</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/isotope.css" media="screen" />
+    <link rel="stylesheet" href="js/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Icon -->
+    <link rel="stylesheet" type="text/css" href="assets/fonts/line-icons.css">
+    <!-- Nivo Lightbox -->
+    <link rel="stylesheet" type="text/css" href="assets/css/nivo-lightbox.css" >
+    <!-- Animate -->
+    <link rel="stylesheet" type="text/css" href="assets/css/animate.css">
+    <!-- Main Style -->
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+    <!-- Responsive Style -->
+    <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
+    <!-- skin -->
+    <link rel="stylesheet" href="skin/default.css">
+
+    <style>
+
+    h3 {
+        color: #fff;
+}
+
+      .navbar-nav li a {
+        color:white;
+      }
+      .navbar-nav li a:hover {
+        background-color: #3883bd;
+        color: white;
+        font-size:1.3rem;
+      }
+      .fa-code ,  .fa-terminal , .fa-bolt {
+        color: #3883bd;
+      } 
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: #ab3347; 
+      }
+      .container1 {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 60%;
+        height: 500px;
+      }
+      .login1 {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 300px;
+        height: 100px;
+        gap: 20px;
+      }
+      .login1 h2 {
+        font-size: 2em;
+        color: #fff;
+      }
+      .input__box {
+        position: relative;
+        width: 100%;
+      }
+      .input__box input,
+      .input__box button,
+      .input__box textarea {
+        position: relative;
+        width: 100%;
+        font-size: 0.8em;
+        color: #fff;
+        background: transparent;
+        border: 2px solid #fff;
+        border-radius: 40px;
+        padding: 12px 20px;
+        outline: none;
+        box-shadow: none;
+      }
+      .input__box button {
+        font-size: 1.2em;
+        background: linear-gradient(65deg, #082c4b 0, #5d9fd9 100%);
+        border: none;
+        cursor: pointer;
+      }
+      .input__box input::placeholder {
+        color: rgba(255, 255, 255, 0.75);
+      }
+      .input__box textarea::placeholder {
+        color: rgba(255, 255, 255, 0.75);
+      }
+      .input__links {
+        font-size: 10px;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 0 20px;
+      }
+      .input__links a {
+        text-decoration: none;
+        color: #fff;
+      }
+      .container1 i {
+        position: absolute;
+        inset: 0;
+        border: 2px solid #fff;
+        transition: 0.5s;
+      }
+      .container1:hover i {
+        border: 6px solid var(--clr);
+        filter: drop-shadow(0 0 20px var(--clr));
+      }
+      .container1 i:nth-child(1) {
+        border-radius: 66% 34% 67% 33% / 27% 65% 35% 73%;
+        animation: animate 14s linear infinite;
+      }
+      .container1 i:nth-child(2) {
+        border-radius: 53% 47% 53% 47% / 50% 40% 60% 50%;
+        animation: animate 13s linear infinite;
+      }
+      .container1 i:nth-child(3) {
+        border-radius: 41% 59% 43% 57% / 57% 30% 70% 43%;
+        animation: animate 15s linear infinite;
+      }
+      @keyframes animate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .container1:hover i:nth-child(1) {
+        animation: animate 5s linear infinite;
+      }
+      .container1:hover i:nth-child(2) {
+        animation: animate 7s linear infinite;
+      }
+      .container1:hover i:nth-child(3) {
+        animation: animate 6s linear infinite;
+      }
+      .navbar {
+        line-height: 100px;
+        height: 100px;
+        background-color: rgba(0,0,0,0.3);
+        display: block;
+        vertical-align: middle;
+        text-align: center;
+        margin-bottom: 0;
+        padding-bottom:0;
+      }
+      
+      .navbar .navbar-collapse {
+        margin-bottom: 0;
+        padding-bottom:0;
+      }
+       
+       
+
+      .nav li {
+        height: 100%;
+        line-height: 100%;
+        margin-bottom: 0;
+        padding-bottom:0;
+      }
+      
+      .nav>li>a {
+        display: table-cell;
+        height: 100%;
+        line-height: 100%;
+        vertical-align: middle;
+        color: #112271;
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+      }
+      
+    
+      
+      .navbar-nav {
+        float: right;
+        margin-bottom: 0;
+        padding-bottom:0;	
+      }
+      
+   
+      .navbar .navbar-nav > .active > a {
+        padding-bottom: 22px;
+      }
+      
+      h1 a.navbar-brand {
+        font-size: 24px;
+        color: #fff;
+        font-weight: 900;
+        text-shadow: none;
+      }
+      
+      .navbar-brand {
+        padding: 0;
+        display: table-cell;
+        vertical-align: middle;
+        line-height: 90px;
+      }
+      
+      .navbar-brand img {
+        vertical-align: middle;
+      }
+      
+      .navbar-toggle {
+        padding: 0;
+        margin: 0;
+        width: 80px;
+      }
+      
+      .navbar-collapse.in {
+        margin-top: -5px !important;
+      }
+      .nbar {
+        height: 10vh;
+        padding-top: 0.5vh;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.612);
+        position: fixed;
+        transition: all 600ms;
+        z-index: 100000;
+      }
+      .nbar.scred {
+        height: 54px !important;
+        padding-top: 0px !important;
+        padding-bottom: 0.5%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.919);
+        position: fixed;
+      }
+      .nlinks {
+        margin-top: 20px;
+        display: inline-block;
+        width: 17%;
+        height:10rem;
+        text-align: center;
+        color: white !important;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 100;
+        transition: 0.2s;
+      }
+      .nlinks:hover {
+        font-weight: 900;
+        cursor: pointer;
+      }
+      .nlogo {
+        background-color: rgb(19, 96, 97);
+        height: 160%; 
+        position: absolute;
+        z-index: -1;
+        top: 0px;
+        left: 5.9%;
+        transition: all 600ms;
+      }
+
+      .nlogop span {
+        display:inline-block;
+        padding: 0 !important;
+      }
+
+      .nlogo.scred2 {
+        background-color: rgba(0, 0, 0, 1);
+        height: 65.6px !important;
+        transition: all 600ms ease-in-out;
+      }
+      .nlogop {
+        width: 100%; text-align:center; 
+        padding: 0%; 
+        background-color: rgb(19, 96, 97); 
+        color: white; 
+        font-family: 'Montserrat', sans-serif; 
+        font-weight: 100;
+        font-size: 10px;
+        letter-spacing: 7px;
+        transition: all 2000ms ease-in-out;
+      }
+      .nlogop.scred3 {
+        display:none !important;
+        transition: all 2000ms ease-in-out;
+      }
+      .ant {
+        position:absolute;
+       
+        background-size: cover;
+      }
+      @import 'https://fonts.googleapis.com/css?family=Bungee+Shade';
+      .btn5.striped-shadow span {
+        display: block;
+        position: relative;
+        z-index: 2;
+        border: 5px solid;
+      }
+      .btn5.striped-shadow.white span {
+        border-color: #1a607c;
+        color: #1a607c;
+        background: #ffffff;
+        margin-left:-2px;
+        margin-top: -2px;
+      }
+      .btn5 {
+        margin-bottom:30px;
+        font-family: 'Bungee Shade', sans-serif;
+        height: 80px;
+        line-height: 65px;
+        display: inline-block;
+        letter-spacing: 1px;
+        position: relative;
+        font-size: 1.35rem;
+        transition: opacity .3s, z-index .3s step-end, -webkit-transform .3s;
+        transition: opacity .3s, z-index .3s step-end, transform .3s;
+        transition: opacity .3s,
+          z-index .3s step-end,
+          transform .3s,
+          -webkit-transform .3s;
+        z-index: 1;
+        background-color: transparent;
+        padding: 0;
+        cursor: pointer;
+        border-color: transparent;
+      }
+
+      .btn5 {
+        width: 155px;
+        height: 48px;
+        line-height: 38px;
+      }
+
+      button.btn5.striped-shadow.white:after, button.btn5.striped-shadow.white:before {
+        background-image: linear-gradient(
+          135deg,
+          transparent 0,
+          transparent 5px,
+          #1a607c 5px,
+          #1a607c 10px,
+          transparent 10px
+        );
+      }
+
+      button.btn5.striped-shadow:hover:before {
+        max-height: calc(100% - 10px);
+      }
+
+      button.btn5.striped-shadow:after {
+        width: calc(100% - 4px);
+        height: 8px;
+        left: -10px;
+        bottom: -9px;
+        background-size: 15px 8px;
+        background-repeat: repeat-x;
+      }
+      button.btn5.striped-shadow:after, button.btn5.striped-shadow:before {
+        content: '';
+        display: block;
+        position: absolute;
+        z-index: 1;
+        transition: max-height .3s, width .3s, -webkit-transform .3s;
+        transition: transform .3s, max-height .3s, width .3s;
+        transition: transform .3s, max-height .3s, width .3s, -webkit-transform .3s;
+      }
+
+      .btn5.striped-shadow:hover {
+        -webkit-transform: translate(-12px, 12px);
+        -ms-transform: translate(-12px, 12px);
+        transform: translate(-12px, 12px);
+        z-index: 3;
+      }
+
+      button.btn5.striped-shadow:hover:after, button.btn5.striped-shadow:hover:before {
+        -webkit-transform: translate(12px, -12px);
+        -ms-transform: translate(12px, -12px);
+        transform: translate(12px, -12px);
+      }
+      button.btn5.striped-shadow:before {
+        width: 8px;
+        max-height: calc(100% - 5px);
+        height: 100%;
+        left: -12px;
+        bottom: -5px;
+        background-size: 8px 15px;
+        background-repeat: repeat-y;
+        background-position: 0 100%;
+      }
+
+      .nav-list {
+        margin-left:500px;
+      }
+
+       * {
+        box-sizing: border-box;
+       }
+     
+
+
+       @media screen and (max-width: 500px) {
+     .rotating_circles i {
+       display: none;
+      }
+       
+      .navbar-brand {
+        line-height: 20px !important;
+      }
+     }
+
+
+     @media screen and (max-width: 750px) {
+   
+      .navbar-collapse li {
+       width:100%;
+    }
+
+     }
+
+
+     @media screen and (min-width: 751px) {
+   
+   .navbar-collapse li {
+    width:15rem;
+
+  }
+
+}
+
+
+ .navbar-nav li {
+   margin-left:auto;
+   margin-right:auto;
+ }
+
+  
+ .navbar-nav li a:hover {
+                        background-color: #3883bd;
+                        color: white;
+                        font-size:1.3rem;
+                       }
+ 
+ .navbar-nav li:active{
+  background-color: #3883bd !important;
+  color: white !important;
+  font-size:1.3rem;
+ }
+
+
+
+ .fa-code ,  .fa-terminal , .fa-bolt {
+                    color: #3883bd;
+                  }
+
+                  </style>
+
+    </style>
+    <script>
+      $(function () {
+        $(document).scroll(function () {
+          var $nav = $(".nbar");
+          var $navl = $(".nlogo");
+          var $navp = $(".nlogop");
+          $nav.toggleClass('scred', $(this).scrollTop() > $nav.height());
+          $navl.toggleClass('scred2', $(this).scrollTop() > $nav.height());
+          $navp.toggleClass('scred3', $(this).scrollTop() > $nav.height());
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div style="width: 100%; height: 100vh;" data-vide-bg="video/swarm_video_3.mp4" data-vide-options="loop: true, muted: true, position: 0% 0%">
+
+
+     <!-- <section id="header" class="appear"></section> -->
+     <div class="navbar navbar-fixed-top" role="navigation" data-0="line-height:100px; height:100px; background-color:rgba(0,0,0,0.6);" data-300="line-height:60px; height:60px; background-color:rgba(0,0,0,1);">
+      <div class="container">
+         <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="fa fa-bars color-white"></span>
+            </button>
+            <div class="nlogo navbar-brand" style="text-align:center"> <img src="assets/img/logo.png" style="width: 60%; height: auto;"><br><p class="nlogop"><span>SWARM</span><br><span>ROBOTICS</span></p></div>
+         </div>
+         <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav" style="text-align:center" data-0="margin-top:20px;" data-300="margin-top:5px;">
+               <li><a class="nlinks" style="text-align: center;" href="#section-about">Home</a></li>
+               <li><a class="nlinks" href="./projects.html">Projects</a></li>
+               <li><a class="nlinks"  href="./team.html">Teams</a></li>
+               <li><a class="nlinks" href="#event-up">Achievements</a></li>
+               <li><a class="nlinks" href="#contact_us">Contacts</a></li>
+            </ul>
+         </div>
+         <!--/.navbar-collapse -->
+      </div>
+   </div>
+
+
+
+      <img src="bg-img-3.jpg" style="height: 100%; width: 100%; opacity: 0.1; position: absolute;">
+      <section class="featured">
+        <div class="container">
+          <div class="row mar-bot40">
+            <div class="col-md-6 col-md-offset-3">
+              <div class="align-center">
+                <img src="swarm.png">
+                <h2 class="slogan">IIT-KGP </h2>
+                <h2 class="slogan-new">Swarm Robotics</h2>
+                <h2 class="slogan">Group</h2>
+                <p>We are a group of enthusiastic, motivated students interested in exploring the contemporary field of distributed algorithms for robot swarms, and their implementation.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Section: general info / about -->
+    <section id="section-about" class="section pad-bot30 bg-white">
+      <div class="container">
+        <div class="row mar-bot40">
+          <div class="col-lg-4" >
+            <div class="align-center">
+              <i class="fa fa-code fa-5x mar-bot20"></i>
+              <h4 class="text-bold">What is Swarm Robotics?</h4>
+              <p>Swarm robotics is the study of how to design groups of robots that operate without relying on any external infrastructure or on any form of centralized control.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4" >
+            <div class="align-center">
+              <i class="fa fa-terminal fa-5x mar-bot20"></i>
+              <h4 class="text-bold">Why Swarm Robotics?</h4>
+              <p>Swarm robotics is a major contemporary field of application and research in institutes around the world, not to mention a vastly untapped one in India. The potential for use in the industry as well as for non-commercial purposes is great.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4" >
+            <div class="align-center">
+              <i class="fa fa-bolt fa-5x mar-bot20"></i>
+              <h4 class="text-bold">Objective</h4>
+              <p>The aim of this project is to design a team of co-ordinating robots which use swarm intelligence to achieve a number of objectives related to navigation and mapping.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- spacer section: advisory -->
+    <section id="testimonials" class="section" data-stellar-background-ratio="0.5">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="align-center">
+              <div class="testimonial pad-top40 pad-bot40 clearfix">
+                <h5>
+                  <!-- Please check the links above or scroll down to know more about our project, the problem statements, and the team involved. -->
+                  We are advised by <a href="http://cse.iitkgp.ac.in/~pallab/" target="_blank">Prof. Pallab Dasgupta</a> of the Department of <a>Computer Science and Engineering</a>, and are funded by the <a>Sponsored Research and Industrial Consultancy</a> group of <a>IIT Kharagpur</a>. The principal investigator for this project is <a href="http://www.facweb.iitkgp.ernet.in/~smsh/" target="_blank">Prof. Somesh Kumar</a>, President, <a>Technology Students' Gymkhana</a>.
+                </h5>
+                <br/>
+                <!-- <span class="author">&mdash; MIKE DOE <a href="#">www.siteurl.com</a></span> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section Start -->
+    <section id="team" class="section-padding text-center">
+      <h1>SWARM Team</h1>
+      <p>Follow the swarm of ants to view our team</p>
+      <span class="ant"></span>
+      <span class="ant"></span>
+      <span class="ant"></span>
+      <span class="ant"></span>
+      <span class="ant"></span>
+      <span class="ant"></span>
+      <span class="ant"></span>
+      <span class="ant"></span>
+      <span class="ant"></span>
+      <span class="ant"></span>
+      <span class="ant"></span>
+      <span class="ant"></span>
+      <span class="ant"></span>
+      <span class="ant"></span>
+      <span class="ant"></span>
+      <div>
+        <button id="clickh" class="btn5 striped-shadow white" onclick="window.location.href='./team.html';"><span>Click Here</span></button>
+      </div>
+      <div class="container">
+        <div class="row" style="width:60%;margin:auto"> 
+          <div class="col-sm-12 col-lg-4">
+           <img src="./img/team/Shushman.jpg" style="height:20rem;width:20rem;border-radius:50%;">
+           <b>Shushman Choudhary</b>
+           <span>Alumnus (Founder)</span>
+          </div>
+          <div class="col-sm-12 col-lg-4">
+            <img src="./img/team/pallab_das_gupta.png" style="height:20rem;width:20rem;border-radius:50%;">
+            <b>Prof Pallab Das Gupta</b>
+            <span>Professor (Advisor)</span>
+          </div>
+          <div class="col-sm-12 col-lg-4">
+            <img src="./img/team/somesh_kumar.png" style="height:20rem;width:20rem;border-radius:50%;">
+            <b>Prof Somesh Kumar</b>
+            <span>Professor (Principal Investigator)</span>
+          </div>
+        </div>
+      </div>
+      <script>
+        var mouseCoords = {x:780,y:2650};
+        console.log(mouseCoords.x)
+        var antSpeed = 100; // ant speed in pixels per second
+        var antSize = 30; // ant size in pixels
+        var lastUpdate = 0; // time of last animation update
+
+        var body = document.getElementsByTagName('body')[0];
+        var ants = document.getElementsByClassName('ant'); // get ant elements
+
+        // random position each ant and set size
+        for (var i = 0; i < ants.length; i++) {
+          randomPositionAnt(ants[i]);
+          ants[i].style.height = antSize + "px";
+          ants[i].style.width = antSize + "px";
+        }
+
+        // randomly position ant at edge of screen
+        function randomPositionAnt(ant) {
+          if (Math.random() < 0.5) {
+            ant.xLoc = 0;
+          } else {
+            ant.xLoc = body.clientWidth;
+          }
+          ant.yLoc = Math.random() * body.clientHeight;
+        };
+        // return true if distance between ant and cursor is less than 10 pixels
+        function isAntTouchingCursor(ant) {
+          return Math.sqrt((ant.xLoc - mouseCoords.x) * (ant.xLoc - mouseCoords.x) + (ant.yLoc - mouseCoords.y) * (ant.yLoc - mouseCoords.y)) < 10;
+        }
+        // function to call each animation cycle
+        function update() {  
+          requestAnimationFrame(update);
+          var updateTime = new Date().getTime();
+          var timeDiff = (Math.min(100, Math.max(updateTime - lastUpdate, 0))) / 1000;
+          lastUpdate = updateTime;
+          for (var i = 0; i < ants.length; i++) {
+            var ant = ants[i];
+            var xDiff = mouseCoords.x - ant.xLoc;
+            var yDiff = mouseCoords.y - ant.yLoc;
+            var multi = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+            var xSpeed = xDiff / multi * antSpeed;
+            var ySpeed = yDiff / multi * antSpeed;
+            var rotation = (180 * Math.atan2(yDiff, xDiff) / Math.PI) - 180;
+            ant.xLoc += xSpeed * timeDiff;
+            ant.yLoc += ySpeed * timeDiff;
+            if (isAntTouchingCursor(ant)) {
+              randomPositionAnt(ant);
+            }
+            ant.style.left = (ant.xLoc - (antSize / 2)) + "px";
+            ant.style.top = (ant.yLoc - (antSize / 2)) + "px";
+            ant.style.transform = "rotate(" + rotation +  "deg)";
+          };
+        }
+        update();
+      </script>
+    </section>
+    <!-- Team Section End -->
+
+    <!-- spacer section:stats -->
+    <section id="parallax1" class="section pad-top40 pad-bot40" data-stellar-background-ratio="0.5">
+      <div class="container">
+        <div class="align-center pad-top40 pad-bot40">
+          <blockquote class="bigquote color-white"></blockquote>
+          <p class="color-white"></p>
+        </div>
+      </div>
+    </section>
+  
+    
+
+    
+
+    <!-- Event Slides Section Start -->
+    <section id="event-up" class="section-padding">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="section-title-header text-center">
+              <h2 class="section-title wow fadeInUp" data-wow-delay="0.2s">ACHIEVEMENTS</h2>
+              <p class="wow fadeInDown" data-wow-delay="0.2s" style="margin-top:2px;padding-bottom:0px;">Swarm Robotics IIT Kharagpur won the First Runners Up position in <b>DRDO's DRUSE 2018</b> </p>
+              <p style="margin-top:2px;padding-bottom:0px;">(hover below to know more)</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-xs-12">
+            <div class="event-item text-center">
+              <img src="./img/achievements/achievements.png" height="400rem" width="45%" alt="">
+              <div class="overlay-text" >
+                <div class="content">
+                  <h3>Swarm Robotics IIT Kharagpur took part in DRDO's DRUSE 2018 (DRDO Robotics & Unmanned Systems Exposition) which was held in Pune from 23rd May to 25th May 2018 and won the First Runners Up position to win a cash prize of 1 Lac Rupees for further research and implementation. This was the culmination of the national level challenge which had over 1000 entries out of which 164 qualified for the Zonals on 28th March 2018 where they were crowned the runners-up in the 30 teams selected for the finals.</h3>
+                  <a href="https://www.facebook.com/scholarsavenue/posts/10156233459420132/?paipv=0&eav=AfYKq95wMrjHin9mmRv8XRj22DnWkblE_8k9AsOVskCeSpOiYHwOnZTe-c6BLyJSR6o&_rdr">View details</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="height: 150px;"></div>
+    </section>
+    <!-- Event Slides Section End -->
+
+    <!-- Count Bar Start -->
+    <section id="count">
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <div class="count-wrapper text-center">
+            <div class="time-countdown wow fadeInUp" data-wow-delay="0.2s">
+              <div id="clock" class="time-count">
+                <div class="time-entry days"><span id="years">10</span> <b>:</b> Years</div>
+                <div class="time-entry hours"><span id="months">11</span> <b>:</b> Months</div>
+                <div class="time-entry minutes"><span id="days">10</span> Days</div>
+                <div class="time-entry seconds"><span style="font-size: 30px;">OF RESEARCH</span>& counting</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Count Bar End -->
+
+  
+    <!-- Contact text Start -->
+    <section id="contact-text" style="padding-left: 120px; padding-right: 120px;">
+        <div class="row contact-wrapper">
+          <div class="col-lg-4 col-md-5 col-xs-12">
+            <ul>
+              <li>
+                <i class="lni-home"></i>
+              </li>
+              <li><span>SWARM Room, Gymkhana, IIT Kharagpur</li>
+            </ul>
+          </div>
+          <div class="col-lg-4 col-md-3 col-xs-12">
+            <ul>
+              <li>
+                <i class="lni-phone"></i>
+              </li>
+              <li><span>+789 123 456 79</span></li>
+            </ul>
+          </div>
+          <div class="col-lg-4 col-md-3 col-xs-12">
+            <ul>
+              <li>
+                <i class="lni-envelope"></i>
+              </li>
+              <li><span>swarm.iitkgp@gmail.com</span></li>
+            </ul>
+          </div>
+        </div>
+    </section>
+    <!-- Contact text End -->
+
+    <footer id="contact_us">
+      <div class="container">2
+        <div class="row justify-content-center">
+          <div class="col-lg-12 col-md-12 col-xs-12">
+            <div class="subscribe-inner wow fadeInDown justify-content-center" data-wow-delay="0.3s">
+              <!-- <h2 class="subscribe-title">CONTACT US</h2> -->
+              <div class="container1 justify-content-center rotating_circles" style="margin-left: auto; margin-right: auto;">
+                <i style="--clr: #00ff0a"></i>
+                <i style="--clr: #ff0057"></i>
+                <i style="--clr: #fffd44"></i>
+                <div class="login1">
+                  <h2>CONTACT US</h2>
+                  <div class="input__box">
+                    <input type="email" placeholder="Email" />
+                  </div>
+                  <div class="input__box">
+                    <textarea type="text" rows="3" placeholder="Enter your message here"></textarea>
+                  </div>
+                  <div class="input__box">
+                    <button type="submit">Submit</button>
+                  </div>
+                  <div class="input__links">
+                    <a href="#">We always welcome new enthusiasts with open hands</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="footer-logo">
+              <img src="assets/img/logo.png" alt="">
+            </div>
+            <div class="social-icons-footer">
+              <ul>
+                <li class="facebook"><a target="_blank" href="https://www.facebook.com/swarmroboticskgp/videos"><i class="lni-facebook-filled"></i></a></li>
+                <li class="linkedin"><a target="_blank" href="https://www.linkedin.com/company/swarm-robotics-iit-kgp/?originalSubdomain=in"><i class="lni-linkedin-filled"></i></a></li>
+                <li class="pinterest"><a target="_blank" href="https://wiki.metakgp.org/w/Swarm_Robotics_IIT_KGP"><i class="fa fa-wikipedia-w"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <div id="preloader">
+      <div class="sk-circle">
+        <div class="sk-circle1 sk-child"></div>
+        <div class="sk-circle2 sk-child"></div>
+        <div class="sk-circle3 sk-child"></div>
+        <div class="sk-circle4 sk-child"></div>
+        <div class="sk-circle5 sk-child"></div>
+        <div class="sk-circle6 sk-child"></div>
+        <div class="sk-circle7 sk-child"></div>
+        <div class="sk-circle8 sk-child"></div>
+        <div class="sk-circle9 sk-child"></div>
+        <div class="sk-circle10 sk-child"></div>
+        <div class="sk-circle11 sk-child"></div>
+        <div class="sk-circle12 sk-child"></div>
+      </div>
+    </div>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="js/stellar.js"></script>
+    <script src="assets/js/jquery-min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/jquery.countdown.min.js"></script>
+    <script src="assets/js/waypoints.min.js"></script>
+    <script src="assets/js/jquery.counterup.min.js"></script>
+    <script src="assets/js/jquery.nav.js"></script>
+    <script src="assets/js/jquery.easing.min.js"></script>
+    <script src="assets/js/wow.js"></script>
+    <script src="assets/js/nivo-lightbox.js"></script>
+    <script src="assets/js/video.js"></script>
+    <script src="assets/js/main.js"></script>
+    <a href="#header" class="scrollup"><i class="fa fa-chevron-up"></i></a>
+    <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxmZwaoJo3TW82HylIR2kmVCLCPp7IDV4&sensor=false"></script>
+    <script src="js/jquery.isotope.min.js"></script>
+    <script src="js/jquery.nicescroll.min.js"></script>
+    <script src="js/fancybox/jquery.fancybox.pack.js"></script>
+    <script src="js/skrollr.min.js"></script>
+    <script src="js/jquery.scrollTo-1.4.3.1-min.js"></script>
+    <script src="js/jquery.localscroll-1.2.7-min.js"></script>
+    <script src="js/stellar.js"></script>
+    <script src="js/jquery.appear.js"></script>
+    <script src="js/validate.js"></script>
+    <script src="js/main.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
+    <script src="js/jquery.vide.min.js"></script>
+    <script type="text/javascript">
+      // When the window has finished loading create our google map below
+      google.maps.event.addDomListener(window, 'load', init);
+
+      function init() {
+          // Basic options for a simple Google Map
+          // For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
+          var mapOptions = {
+              // How zoomed in you want the map to start at (always required)
+              zoom: 16,
+
+              // The latitude and longitude to center the map (always required)
+              center: new google.maps.LatLng(22.3149071, 87.309254), // New York
+
+              // How you would like to style the map.
+              // This is where you would paste any style found on Snazzy Maps.
+              styles: [	{		featureType:"all",		elementType:"all",		stylers:[		{			invert_lightness:true		},		{			saturation:10		},		{			lightness:30		},		{			gamma:0.5		},		{			hue:"#1C705B"		}		]	}	]
+          };
+
+          // Get the HTML DOM element that will contain your map
+          // We are using a div with id="map" seen below in the <body>
+          var mapElement = document.getElementById('map');
+
+          // Create the Google Map using out element and options defined above
+          var map = new google.maps.Map(mapElement, mapOptions);
+      }
+    </script>
+  </body>
+</html>
